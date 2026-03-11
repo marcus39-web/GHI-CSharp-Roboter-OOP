@@ -1,5 +1,7 @@
 # 🤖 BrainBot Analyse & Bemaßung v1.0.2
 
+![BrainBot Guide](images/images.jpg)
+
 Willkommen beim BrainBot-Steuerungssystem!
 Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ein modernes Web-Dashboard, die Speicherung und Auswertung von Sensordaten, KI-gestützte Kategorisierung sowie den Export technischer Berichte.
 **Das System läuft standardmäßig im Simulationsmodus** – auch ohne echte Hardware.
