@@ -2,11 +2,11 @@
 
 <table border="0">
   <tr>
-    <td>
-      <img src="images/images.jpg" width="400" alt="BrainBot Guide">
+    <td align="center" valign="middle">
+      <img src="images/images.jpg" width="400" />
     </td>
-    <td>
-      <img src="images/dashboard.png" width="400" alt="BrainBot Dashboard">
+    <td align="center" valign="middle">
+      <img src="images/dashboard.png" width="450" />
     </td>
   </tr>
 </table>
