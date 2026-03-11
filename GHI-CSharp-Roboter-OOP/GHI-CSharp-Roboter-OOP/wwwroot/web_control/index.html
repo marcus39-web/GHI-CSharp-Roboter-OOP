@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BrainBot Analyse & Bemaßung v1.0.2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #mapContainer {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 20px auto;
+            border: 2px solid #333;
+            background: #fff;
+            background-image: linear-gradient(#ddd 1px, transparent 1px), linear-gradient(90deg, #ddd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .start-node {
+            background: blue;
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .pos-node {
+            background: red;
+            opacity: 0.7;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        input, select {
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-update {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BrainBot Einsatzbericht v1.0.2</h1>
+        <div style="background:#ffc107;color:#333;padding:10px 0;margin-bottom:15px;border-radius:6px;font-size:1.1em;font-weight:bold;">
+            <span style="font-size:1.2em;">Simulationsmodus aktiv:</span> Alle Daten und Bewegungen sind virtuell/testweise!<br>
+            <span style="font-size:0.95em;">(Das System arbeitet aktuell ohne echte Roboter-Hardware.)</span>
+        </div>
+        <div class="controls">
+            <div class="input-group">
+                <label>Zimmername:</label>
+                <input type="text" id="roomName" value="Wohnzimmer">
+            </div>
+            <div class="input-group">
+                <label>Zeitraum-Filter:</label>
+                <select id="timeFilter" onchange="fetchHistory()">
+                    <option value="day">Tag</option>
+                    <option value="week">Woche</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="mapContainer">
+            <div class="point start-node" style="left: 50%; top: 50%;" title="Nullpunkt (0,0)"></div>
+            <div id="pathDisplay"></div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <button class="btn-update" onclick="fetchHistory()">Daten aktualisieren</button>
+            <button class="btn-export" onclick="triggerJpgExport()">JPG Export (v1.0.2)</button>
+        </div>
+
+        <div id="logTable">
+            <table border="1" style="margin: auto; width: 100%; border-collapse: collapse;">
+                <thead style="background: #343a40; color: white;">
+                    <tr><th>Zeit</th><th>Quelle</th><th>X | Y</th><th>Bemaßung</th><th>KI-Kategorie</th></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <input id="predictCommand" placeholder="Kommando (z.B. FORWARD)">
+            <input id="predictDistance" type="number" placeholder="Distanz (cm)">
+            <button onclick="doPrediction()">Live-Vorhersage</button>
+            <span id="predictResult" style="margin-left:15px;font-weight:bold;"></span>
+        </div>
+    </div>
+
+    <script>
+
+        async function fetchHistory() {
+            const period = document.getElementById('timeFilter').value;
+            const response = await fetch(`/api/history?period=${period}`);
+            const data = await response.json();
+
+            const container = document.getElementById('pathDisplay');
+            const table = document.getElementById('tableBody');
+            container.innerHTML = "";
+            table.innerHTML = "";
+
+            for (const item of data) {
+                const dot = document.createElement('div');
+                dot.className = 'point pos-node';
+                dot.style.left = (300 + item.PosX * 2) + "px";
+                dot.style.top = (200 - item.PosY * 2) + "px";
+                container.appendChild(dot);
+
+                // KI-Kategorie simuliert (später kann hier das echte Feld genutzt werden)
+                let kiKategorie = item.Category || await getPrediction(item.Command, item.DistanceCm);
+
+                table.innerHTML += `<tr>
+                        <td>${new Date(item.CreatedAt).toLocaleString()}</td>
+                        <td>${item.Source}</td>
+                        <td>${item.PosX} | ${item.PosY}</td>
+                        <td>${item.DistanceCm} cm</td>
+                        <td>${kiKategorie}</td>
+                    </tr>`;
+            }
+        }
+
+        async function getPrediction(command, distance) {
+            try {
+                const response = await fetch('/api/webcontrol/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command, distance })
+                });
+                const result = await response.json();
+                return result.ok ? result.prediction : '-';
+            } catch {
+                return '-';
+            }
+        }
+
+        async function doPrediction() {
+            const command = document.getElementById('predictCommand').value;
+            const distance = parseInt(document.getElementById('predictDistance').value);
+            const response = await fetch('/api/webcontrol/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command, distance })
+            });
+            const result = await response.json();
+            document.getElementById('predictResult').innerText = result.ok ? result.prediction : 'Fehler';
+        }
+
+        async function triggerJpgExport() {
+            const payload = {
+                roomName: document.getElementById('roomName').value,
+                width: 300, // Beispielwerte für v1.0.2
+                depth: 200
+            };
+
+            const response = await fetch('/api/export', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.ok) window.open(result.downloadUrl, '_blank');
+        }
+
+        // Initial beim Laden aufrufen
+        fetchHistory();
+    </script>
+</body>
+</html>

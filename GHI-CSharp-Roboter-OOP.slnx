@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Projektmappenelemente/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="GHI-CSharp-Roboter-OOP/GHI-CSharp-Roboter-OOP.csproj" />
+</Solution>
