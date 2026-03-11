@@ -3,17 +3,18 @@
 <table border="0">
   <tr>
     <td align="center" valign="middle">
-      <img src="images/images.jpg" width="400" />
+      <img src="images/images.jpg" width="400" alt="SITCore Hardware Guide" />
     </td>
     <td align="center" valign="middle">
-      <img src="images/dashboard.png" width="450" />
+      <img src="images/dashboard.png" width="450" alt="BrainBot Web Dashboard" />
     </td>
   </tr>
 </table>
 
-Willkommen beim BrainBot-Steuerungssystem!
-Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ein modernes Web-Dashboard, die Speicherung und Auswertung von Sensordaten, KI-gestützte Kategorisierung sowie den Export technischer Berichte.
-**Das System läuft standardmäßig im Simulationsmodus** – auch ohne echte Hardware.
+**Willkommen beim BrainBot-Steuerungssystem!** Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ein modernes Web-Dashboard, die Speicherung und Auswertung von Sensordaten, KI-gestützte Kategorisierung sowie den Export technischer Berichte.
+
+> [!TIP]
+> **Simulationsmodus:** Das System läuft standardmäßig im Simulationsmodus – ideal zum Testen auch ohne echte Hardware.
 
 ---
 
