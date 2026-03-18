@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>BrainBot Analyse & Bemaßung v1.0.2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Das 2D-Gitter für den Roboterpfad */
+        #mapContainer {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 25px auto;
+            border: 2px solid #2c3e50;
+            background: #ffffff;
+            /* Erzeugt das Karomuster */
+            background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .start-node {
+            background: #3498db; /* Blau für Start */
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .pos-node {
+            background: #e74c3c; /* Rot für Pfadpunkte */
+            border: 1px solid white;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #dee2e6;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        input, select {
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 5px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-update {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-predict {
+            background: #6f42c1;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        th {
+            background: #343a40;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .status-banner {
+            background: #ffc107;
+            color: #212529;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🤖 BrainBot Einsatzbericht v1.0.2</h1>
+
+        <div class="status-banner">
+            ⚠️ Simulationsmodus aktiv: Alle Daten und Bewegungen sind virtuell!
+        </div>
+
+        <div class="controls">
+            <div class="input-group">
+                <label>Zimmername für Export:</label>
+                <input type="text" id="roomName" value="Wohnzimmer_Test">
+            </div>
+            <div class="input-group">
+                <label>Zeitraum-Filter:</label>
+                <select id="timeFilter" onchange="fetchHistory()">
+                    <option value="day">Letzte 24 Stunden</option>
+                    <option value="week">Letzte 7 Tage</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="mapContainer">
+            <div class="point start-node" style="left: 300px; top: 200px;" title="Start (0,0)"></div>
+            <div id="pathDisplay"></div>
+        </div>
+
+        <div>
+            <button class="btn-update" onclick="fetchHistory()">🔄 Daten aktualisieren</button>
+            <button class="btn-export" onclick="triggerJpgExport()">📸 JPG Export (v1.0.2)</button>
+        </div>
+
+        <div id="logTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Zeitpunkt</th>
+                        <th>Quelle</th>
+                        <th>Position (X | Y)</th>
+                        <th>Distanz</th>
+                        <th>KI-Kategorie</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e9ecef; border-radius: 8px;">
+            <h3>Live-KI-Vorhersage</h3>
+            <input id="predictCommand" placeholder="Befehl (z.B. FORWARD)" style="width: 200px;">
+            <input id="predictDistance" type="number" placeholder="Distanz (cm)" style="width: 150px;">
+            <button class="btn-predict" onclick="doPrediction()">Analyse starten</button>
+            <div style="margin-top: 10px;">Ergebnis: <span id="predictResult" style="color: #6f42c1; font-weight: bold;">-</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Holt die Daten aus der SQL-Datenbank über die API
+        async function fetchHistory() {
+            try {
+                const period = document.getElementById('timeFilter').value;
+                const response = await fetch(`/api/webcontrol/history?period=${period}`);
+                const data = await response.json();
+
+                const container = document.getElementById('pathDisplay');
+                const table = document.getElementById('tableBody');
+
+                container.innerHTML = "";
+                table.innerHTML = "";
+
+                data.forEach(item => {
+                    // 1. Punkt auf der Karte zeichnen
+                    const dot = document.createElement('div');
+                    dot.className = 'point pos-node';
+
+                    // Laut Bild 19: posX und posY sind KLEINgeschrieben
+                    const xPos = 300 + (item.posX * 2);
+                    const yPos = 200 - (item.posY * 2);
+
+                    dot.style.left = `${xPos}px`;
+                    dot.style.top = `${yPos}px`;
+                    dot.title = `X: ${item.posX}, Y: ${item.posY}`;
+                    container.appendChild(dot);
+
+                    // 2. Zeile in der Tabelle ergänzen
+                    // Laut Bild 19 heißen die Felder: Zeitpunkt, Quelle, Distanz, Category
+                    const row = `<tr>
+                    <td>${item.Zeitpunkt}</td>
+                    <td>${item.Quelle}</td>
+                    <td>${item.posX} | ${item.posY}</td>
+                    <td>${item.Distanz}</td>
+                    <td><strong>${item.Category || item.category || 'Normal'}</strong></td>
+                    </tr>`;
+                    table.innerHTML += row;
+                });
+
+            } catch (error) {
+                console.error("Fehler beim Laden der Historie:", error);
+            }
+        }
+
+        // Einzelne KI-Abfrage
+        async function doPrediction() {
+            const command = document.getElementById('predictCommand').value;
+            const distance = parseInt(document.getElementById('predictDistance').value);
+
+            try {
+                const response = await fetch('/api/webcontrol/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Command: command, Distance: distance })
+                });
+                const result = await response.json();
+                document.getElementById('predictResult').innerText = result.Prediction || 'Fehler';
+            } catch (e) {
+                document.getElementById('predictResult').innerText = 'Server nicht erreichbar';
+            }
+        }
+
+        // JPG Export anstoßen
+        async function triggerJpgExport() {
+            const payload = {
+                RoomName: document.getElementById('roomName').value,
+                ExportDate: new Date().toISOString()
+            };
+
+            const response = await fetch('/api/webcontrol/export', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.Ok) {
+                alert("Export erfolgreich erstellt!");
+                window.open(result.DownloadUrl, '_blank');
+            }
+        }
+
+        // Beim Start einmal laden
+        window.onload = fetchHistory;
+    </script>
+
+</body>
+</html>
