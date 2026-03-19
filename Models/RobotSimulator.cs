@@ -11,6 +11,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
         private static readonly string[] Commands = { "FORWARD", "BACKWARD", "LEFT", "RIGHT", "STOP", "HEARTBEAT" };
         private static readonly string[] Categories = { "Flur", "Hindernis", "Raum", "Korridor" };
         private Random _rnd = new Random();
+        private bool _simulate = true; // Simulationsmodus-Flag
 
         public bool Connect()
         {
@@ -32,6 +33,13 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 RobotLogger.Log($"[SIM] Konnte Befehl '{command}' nicht senden: Nicht verbunden.", "WARN");
                 return false;
             }
+
+            if (!_simulate)
+            {
+                // Hier könnte die Logik für die echte Hardware-Ansteuerung stehen
+                return true;
+            }
+
             // Simuliere Verarbeitung und Testdaten-Generierung
             int distance = _rnd.Next(10, 200); // Zufällige Distanz
             string category = Categories[_rnd.Next(Categories.Length)];

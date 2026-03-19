@@ -85,7 +85,7 @@ cd GHI-CSharp-Roboter-OOP
    - Drücke `F5` in Visual Studio oder führe `dotnet run` im Projektverzeichnis aus.
 
 2. **Web-Dashboard öffnen:**
-   - Im Browser: [http://localhost:5000](http://localhost:5000)
+   - Im Browser: [http://localhost:4000](http://localhost:4000)
 
 3. **Funktionen im Dashboard:**
    - **Live-Visualisierung:** Bewegungen und Positionen werden auf dem Gitter angezeigt.
