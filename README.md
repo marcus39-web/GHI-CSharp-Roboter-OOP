@@ -29,7 +29,7 @@ Im Verzeichnis `UnterrichtsBeispiel` befindet sich die Datei `DidaktikBeispiel.c
 
 - **Program**: Der Einstiegspunkt des Beispiels. Hier werden die einzelnen Module instanziiert und das Gesamtsystem gestartet. Dies ist ideal, um den praktischen Einsatz der zuvor erklärten Komponenten zu zeigen und die Verbindung zwischen Theorie und Praxis herzustellen.
 
-Jede dieser Komponenten ist so gestaltet, dass sie im Unterricht einzeln behandelt, erweitert und getestet werden kann. Das fördert das Verständnis für saubere Softwarearchitektur und die Prinzipien der objektorientierten Programmierung. Das Projekt eignet sich ideal für Vorlesungen, Seminare und praktische Übungen.
+Jede dieser Komponenten ist so gestaltet, dass sie im Unterricht einzeln behandelt, erweitert und getestet werden kann. Das fördert das Verständnis für saubere Softwarearchitektur und die Prinzipien der objektorientierten Programmierung.
 
 ---
 
