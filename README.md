@@ -48,7 +48,7 @@ Jede dieser Komponenten ist so gestaltet, dass sie im Unterricht einzeln behande
 
 ## 🛠 Technologie-Stack
 
-- **Backend:** .NET 10, ASP.NET Core Web API
+- **Backend:** .NET 8.0, ASP.NET Core Web API
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Datenbank:** Microsoft SQL Server (LocalDB oder Server)
 - **KI:** ML.NET (vorbereitet, aktuell Simulationsmodus)
@@ -73,7 +73,7 @@ README.md              // Diese Anleitung
 
 ### Voraussetzungen
 
-- **.NET 10 SDK** (https://dotnet.microsoft.com/download)
+- **.NET 8.0 SDK** (https://dotnet.microsoft.com/download)
 - **Visual Studio 2022/2026** (Community Edition reicht)
 - **Microsoft SQL Server** (LocalDB oder Server, Standard-Instanz: `BrainBotAI`)
 - **(Optional für KI)**: ML.NET NuGet-Paket (`Microsoft.ML`)
