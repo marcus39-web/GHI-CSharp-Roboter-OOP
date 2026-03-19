@@ -13,6 +13,26 @@ Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ei
 
 ---
 
+# Unterrichtsbeispiel für objektorientierte Programmierung in C#
+
+**Dieses Projekt ist speziell für den Einsatz im Unterricht und in der Hochschullehre konzipiert. Es dient als praxisnahes Beispiel für objektorientierte Programmierung in C# und demonstriert zentrale OOP-Konzepte anhand eines modularen Robotersystems.**
+
+## Hauptbestandteil: Das UnterrichtsBeispiel-Verzeichnis
+
+Im Verzeichnis `UnterrichtsBeispiel` befindet sich die Datei `DidaktikBeispiel.cs`, die als zentrales didaktisches Beispiel für den Unterricht dient. Die Struktur ist so gewählt, dass sie die wichtigsten Prinzipien der objektorientierten Softwareentwicklung anschaulich und nachvollziehbar vermittelt:
+
+- **MotorController**: Dieses Modul kapselt die gesamte Logik zur Steuerung der Motoren des Roboters. Es zeigt, wie durch Kapselung und Modularisierung die Komplexität reduziert und die Wiederverwendbarkeit erhöht werden kann. Im Unterricht kann hier gezielt auf die Vorteile von klaren Schnittstellen und die Trennung von Verantwortlichkeiten eingegangen werden.
+
+- **SensorModule**: Das Sensormodul abstrahiert verschiedene Sensoren, die der Roboter zur Umgebungswahrnehmung nutzt. Es eignet sich hervorragend, um die Themen Abstraktion, Erweiterbarkeit und lose Kopplung zu behandeln. Lehrende können hier zeigen, wie neue Sensoren einfach integriert werden können, ohne bestehende Logik zu verändern.
+
+- **Robot**: Die zentrale Klasse, die MotorController und SensorModule zusammenführt. Sie demonstriert die Prinzipien der Komposition und Interaktion von Objekten. Im Unterricht kann hier die Zusammenarbeit mehrerer Module und die Umsetzung komplexerer Logik im Gesamtsystem erläutert werden.
+
+- **Program**: Der Einstiegspunkt des Beispiels. Hier werden die einzelnen Module instanziiert und das Gesamtsystem gestartet. Dies ist ideal, um den praktischen Einsatz der zuvor erklärten Komponenten zu zeigen und die Verbindung zwischen Theorie und Praxis herzustellen.
+
+Jede dieser Komponenten ist so gestaltet, dass sie im Unterricht einzeln behandelt, erweitert und getestet werden kann. Das fördert das Verständnis für saubere Softwarearchitektur und die Prinzipien der objektorientierten Programmierung. Das Projekt eignet sich ideal für Vorlesungen, Seminare und praktische Übungen.
+
+---
+
 ## 🚀 Features
 
 - **Web-Dashboard:** Live-Visualisierung der Roboterposition auf einem 2D-Gitter, Tabellenansicht, Exportfunktionen.
