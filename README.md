@@ -1,9 +1,11 @@
 # 🤖 BrainBot Analyse & Bemaßung v1.0.2
 
-<div style="display: flex; gap: 16px;">
-  <img src="./images/robot.jpg" alt="BrainBot Dashboard" width="400"/>
-  <img src="./images/dashboard.png" alt="Zweites Bild" width="400"/>
-</div>
+<table>
+  <tr>
+    <td><img src="./images/robot.jpg" alt="BrainBot Dashboard" width="400"/></td>
+    <td><img src="./images/dashboard.png" alt="Zweites Bild" width="400"/></td>
+  </tr>
+</table>
 
 Willkommen beim BrainBot-Steuerungssystem!
 Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ein modernes Web-Dashboard, die Speicherung und Auswertung von Sensordaten, KI-gestützte Kategorisierung sowie den Export technischer Berichte.
