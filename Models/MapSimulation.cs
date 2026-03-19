@@ -15,7 +15,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
         public bool Running { get; private set; } = true;
         public int Tick { get; private set; } = 0;
 
-        // FIX CS8618: Initialisierung verhindert die Warnung
+    
         public List<Dictionary<string, object>> Obstacles { get; private set; } = new();
         public List<Dictionary<string, object>> Robots { get; private set; } = new();
 
@@ -144,7 +144,6 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 .ToList();
         }
 
-        // --- HIER WAR DAS PROBLEM: Methode SaveSnapshot vervollständigt ---
         public (bool ok, string message, string? filename) SaveSnapshot(string? name = null)
         {
             lock (_lock)
@@ -177,5 +176,5 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 }
             }
         }
-    } // Ende Klasse
-} // Ende Namespace
+    } 
+} 

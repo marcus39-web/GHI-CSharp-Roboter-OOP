@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Runtime.Versioning; // Wichtig für die Fehlerbehebung der CA1416 Warnung
+using System.Runtime.Versioning; 
 
 namespace GHI_CSharp_Roboter_OOP.Models
 {
@@ -50,7 +50,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
 
             foreach (var entry in entries)
             {
-                // Null-Safe Abfrage der Decision
+               
                 var decision = entry.GetValueOrDefault("decision", "UNKNOWN")?.ToString()?.ToUpper() ?? "UNKNOWN";
                 totals["total"]++;
                 if (totals.ContainsKey(decision))
@@ -118,7 +118,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
-        // Löst die gelben CA1416 Warnungen (Plattformkompatibilität)
+     
         [SupportedOSPlatform("windows")]
         public (bool, string) ExportJpg(string roomName, Dictionary<string, object> geometry, string period, List<Dictionary<string, object>> entries)
         {
@@ -134,7 +134,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 using var graphics = Graphics.FromImage(bitmap);
                 graphics.Clear(Color.White);
 
-                // 'using' stellt sicher, dass die Schriftart korrekt entladen wird
+           
                 using var titleFont = new Font("Arial", 16, FontStyle.Bold);
                 using var textFont = new Font("Arial", 12);
 

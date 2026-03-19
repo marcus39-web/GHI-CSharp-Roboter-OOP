@@ -45,7 +45,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
             } catch { }
         }
 
-        // DIESE METHODE BEHEBT FEHLER CS1061 (Bild 1)
+      
         public void GenerateTechnicalDrawing(string path, object data) { }
     }
 }

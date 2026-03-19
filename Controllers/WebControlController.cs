@@ -19,8 +19,8 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
                 {
                     if (_gateway == null)
                     {
-                        // Wichtig: Port auf 8000 geändert, da die Web-App selbst auf 5000 läuft!
-                        _gateway = new RobotGateway("127.0.0.1", 8000, simulate: true);
+                        
+                        _gateway = new RobotGateway("127.0.0.1", 4000, simulate: true);
                     }
                 }
             }
@@ -57,8 +57,7 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
 
             var (ok, message) = _gateway!.Send(request.Command);
 
-            // Hier passiert die Magie: Wir holen uns direkt eine KI-Vorhersage für das Log
-            // In einer echten App würde das Gateway diese Daten nun in die neue DB-Struktur schreiben
+       
             return Ok(new { ok, message, connected = _gateway.Connected });
         }
 
@@ -72,7 +71,7 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
             return Ok(new { ok = true, prediction });
         }
 
-        // Hilfsklassen für die API-Requests
+
         public class CommandRequest { public string? Command { get; set; } }
         public class PredictRequest
         {

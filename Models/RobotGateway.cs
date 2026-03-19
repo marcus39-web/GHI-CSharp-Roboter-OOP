@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace GHI_CSharp_Roboter_OOP.Models
 {
-    // Thread-sichere Brücke zwischen Web-API und BrainBotRemote
+
     public class RobotGateway
     {
         private readonly string _robotIp;
@@ -18,9 +18,6 @@ namespace GHI_CSharp_Roboter_OOP.Models
         private readonly TimeSpan _heartbeatTimeout = TimeSpan.FromSeconds(5);
         private bool _emergencyTriggered = false;
 
-        /// <summary>
-        /// Erstellt ein RobotGateway. Wenn simulate=true, wird der Simulationsmodus verwendet (keine echte Hardware nötig).
-        /// </summary>
         public RobotGateway(string robotIp, int robotPort, bool simulate = false)
         {
             _robotIp = robotIp;
@@ -50,7 +47,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
                     }
                     else
                     {
-                        // Keine Antwort, prüfe Timeout
+                        
                         if (DateTime.Now - _lastHeartbeatResponse > _heartbeatTimeout)
                         {
                             _emergencyTriggered = true;
@@ -132,12 +129,12 @@ namespace GHI_CSharp_Roboter_OOP.Models
                     return (false, "nicht verbunden (erst START drücken)");
                 }
                 bool success = _robot.SendCommand(command);
-                // Lernmodus: Jeden Befehl loggen
+               
                 var entry = new LearningDataEntry
                 {
                     Timestamp = DateTime.Now,
                     Command = command
-                    // Distance und Category können später ergänzt werden
+                   
                 };
                 LearningDataLogger.Log(entry);
                 if (success)

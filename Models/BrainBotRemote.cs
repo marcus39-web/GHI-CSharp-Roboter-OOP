@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GHI_CSharp_Roboter_OOP.Models
 {
-    // Platzhalter für die Übersetzung von BrainBotRemote aus basis_class.py
+   
     public class BrainBotRemote
     {
         private readonly string _robotIp;
@@ -63,8 +63,8 @@ namespace GHI_CSharp_Roboter_OOP.Models
         {
             if (_simulate)
             {
-                // Simuliere Verarbeitung und Testdaten-Generierung
-                int distance = SimRnd.Next(10, 200); // Zufällige Distanz
+             
+                int distance = SimRnd.Next(10, 200); 
                 string category = SimCategories[SimRnd.Next(SimCategories.Length)];
                 var entry = new LearningDataEntry
                 {
@@ -87,7 +87,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 byte[] data = Encoding.UTF8.GetBytes(command + "\n");
                 _stream.Write(data, 0, data.Length);
                 RobotLogger.Log($"Befehl an Roboter gesendet: {command}", "INFO");
-                // Optional: Antwort lesen, falls Protokoll das vorsieht
+              
                 return true;
             }
             catch (Exception ex)

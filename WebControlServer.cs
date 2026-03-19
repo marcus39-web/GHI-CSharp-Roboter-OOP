@@ -11,24 +11,17 @@ using GHI_CSharp_Roboter_OOP.Models;
 
 namespace GHI_CSharp_Roboter_OOP
 {
-    public class WebControlServer
+    public class WebControlServer(string robotIp, int robotPort, CategorizationDatabase database)
     {
-        private readonly RobotGateway _gateway;
-        private readonly CategorizationDatabase _db;
-
-        public WebControlServer(string robotIp, int robotPort, CategorizationDatabase database)
-        {
-            // Immer Simulationsmodus aktivieren
-            _gateway = new RobotGateway(robotIp, robotPort, simulate: true);
-            _db = database;
-        }
+        private readonly RobotGateway _gateway = new(robotIp, robotPort, simulate: true);
+        private readonly CategorizationDatabase _db = database;
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
             app.UseRouting();
@@ -74,10 +67,10 @@ namespace GHI_CSharp_Roboter_OOP
 
                         if (req != null)
                         {
-                            // --- FIX FÜR CA1416 WARNUNG ---
-#pragma warning disable CA1416
+                         
+
                             _db.GenerateTechnicalDrawing(fullPath, req);
-#pragma warning restore CA1416
+
                         }
 
                         context.Response.ContentType = "application/json";

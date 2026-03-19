@@ -4,14 +4,14 @@ using System.Threading;
 
 namespace GHI_CSharp_Roboter_OOP.Models
 {
-    // Simuliert das Verhalten des Roboters für Test- und Entwicklungszwecke
+
     public class RobotSimulator
     {
         private bool _connected = false;
         private static readonly string[] Commands = { "FORWARD", "BACKWARD", "LEFT", "RIGHT", "STOP", "HEARTBEAT" };
         private static readonly string[] Categories = { "Flur", "Hindernis", "Raum", "Korridor" };
         private Random _rnd = new Random();
-        private bool _simulate = true; // Simulationsmodus-Flag
+        private bool _simulate = true;
 
         public bool Connect()
         {
@@ -36,12 +36,12 @@ namespace GHI_CSharp_Roboter_OOP.Models
 
             if (!_simulate)
             {
-                // Hier könnte die Logik für die echte Hardware-Ansteuerung stehen
+    
                 return true;
             }
 
-            // Simuliere Verarbeitung und Testdaten-Generierung
-            int distance = _rnd.Next(10, 200); // Zufällige Distanz
+           
+            int distance = _rnd.Next(10, 200); 
             string category = Categories[_rnd.Next(Categories.Length)];
             var entry = new LearningDataEntry
             {
