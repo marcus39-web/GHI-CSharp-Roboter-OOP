@@ -1,8 +1,8 @@
 # 🤖 BrainBot Analyse & Bemaßung v1.0.2
 
 <div style="display: flex; gap: 16px;">
-  <img src="./images/dashboard.png" alt="BrainBot Dashboard" width="400"/>
-  <img src="./images/robot.png" alt="Zweites Bild" width="400"/>
+  <img src="./images/robot.jpg" alt="BrainBot Dashboard" width="400"/>
+  <img src="./images/dashboard.png" alt="Zweites Bild" width="400"/>
 </div>
 
 Willkommen beim BrainBot-Steuerungssystem!
