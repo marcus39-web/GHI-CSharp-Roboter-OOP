@@ -43,3 +43,11 @@
 [2026-03-20 04:24:22] [WARN] Befehl 'Ferrari (X:60 Y:60 D:200)' gesendet, aber nicht verbunden.
 [2026-03-20 04:25:02] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
 [2026-03-20 04:25:11] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:30:22] [WARN] Befehl 'Bus (X:5 Y:15 D:500)' gesendet, aber nicht verbunden.
+[2026-03-20 04:30:34] [WARN] Befehl 'Bus (X:5 Y:15 D:500)' gesendet, aber nicht verbunden.
+[2026-03-20 04:30:57] [WARN] Befehl 'Bus (X:5 Y:15 D:1000)' gesendet, aber nicht verbunden.
+[2026-03-20 04:36:31] [WARN] Befehl 'Bus (X:5 Y:15 D:1000)' gesendet, aber nicht verbunden.
+[2026-03-20 04:36:55] [WARN] Befehl 'Bus (X:5 Y:15 D:-1000)' gesendet, aber nicht verbunden.
+[2026-03-20 04:38:26] [WARN] Befehl 'Bus (X:28 Y:-17 D:-961)' gesendet, aber nicht verbunden.
+[2026-03-20 04:38:45] [WARN] Befehl 'Bus (X:500 Y:-200 D:-961)' gesendet, aber nicht verbunden.
+[2026-03-20 04:39:01] [WARN] Befehl 'Bus (X:500 Y:-200 D:-20)' gesendet, aber nicht verbunden.

@@ -164,9 +164,26 @@
             </div>
         </div>
 
-        <div id="mapContainer">
-            <div class="point start-node" style="left: 300px; top: 200px;" title="Start (0,0)"></div>
-            <div id="pathDisplay"></div>
+
+        <div style="position: relative; width: 600px; height: 420px; margin: 25px auto;">
+            <!-- Achsenbeschriftung Y links -->
+            <div style="position: absolute; left: -35px; top: 0; height: 400px; width: 30px; display: flex; flex-direction: column; justify-content: space-between; font-size: 12px; color: #333;">
+                <span>1000</span>
+                <span>500</span>
+                <span>0</span>
+                <span style="position: absolute; left: -18px; top: 180px; font-weight: bold; font-size: 15px; color: #222; transform: rotate(-90deg);">y</span>
+            </div>
+            <!-- Achsenbeschriftung X unten -->
+            <div style="position: absolute; left: 0; bottom: -22px; width: 600px; display: flex; flex-direction: row; justify-content: space-between; font-size: 12px; color: #333;">
+                <span>0</span>
+                <span>500</span>
+                <span>1000</span>
+                <span style="position: absolute; left: 290px; bottom: -20px; font-weight: bold; font-size: 15px; color: #222;">x</span>
+            </div>
+            <div id="mapContainer" style="position: relative; width: 600px; height: 400px;">
+                <div class="point start-node" style="left: 0px; top: 400px;" title="Start (0,0)"></div>
+                <div id="pathDisplay"></div>
+            </div>
         </div>
 
         <div>
@@ -216,13 +233,17 @@
                 container.innerHTML = "";
                 table.innerHTML = "";
 
+
                 data.forEach(item => {
-                    // 1. Punkt auf der Karte zeichnen
+                    // 1. Punkt auf der Karte zeichnen (feste Achsen: 0-1000mm, 600x400px)
                     const dot = document.createElement('div');
                     dot.className = 'point pos-node';
 
-                    const xPos = 300 + (item.posX * 2);
-                    const yPos = 200 - (item.posY * 2);
+                    // Skalierung: 0..1000mm -> 0..600px (X), 0..1000mm -> 400px (Y)
+                    let x = Math.max(0, Math.min(1000, Number(item.posX)));
+                    let y = Math.max(0, Math.min(1000, Number(item.posY)));
+                    const xPos = (x / 1000) * 600;
+                    const yPos = 400 - (y / 1000) * 400;
 
                     dot.style.left = `${xPos}px`;
                     dot.style.top = `${yPos}px`;
@@ -313,6 +334,29 @@ function createRoom() {
         // Beim Start einmal laden
         window.onload = fetchHistory;
 
+    </script>
+    <script>
+    function doPrediction() {
+        const command = document.getElementById('predictCommand').value;
+        const distance = parseInt(document.getElementById('predictDistance').value);
+
+        try {
+            fetch('/api/webcontrol/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Command: command, Distance: distance })
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('predictResult').innerText = result.prediction || 'Fehler';
+            })
+            .catch(() => {
+                document.getElementById('predictResult').innerText = 'Server nicht erreichbar';
+            });
+        } catch (e) {
+            document.getElementById('predictResult').innerText = 'Server nicht erreichbar';
+        }
+    }
     </script>
     <script>
     function onSendCommand() {
