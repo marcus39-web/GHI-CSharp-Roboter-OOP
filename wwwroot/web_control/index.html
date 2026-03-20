@@ -149,8 +149,11 @@
 
         <div class="controls">
             <div class="input-group">
-                <label>Zimmername für Export:</label>
+                <label>Zimmername für Export / Raumname:</label>
                 <input type="text" id="roomName" value="Wohnzimmer_Test">
+                <button id="btnNewRoom" class="btn-update" style="margin-top:10px;" onclick="switchRoom()">Neuen Raum anlegen</button>
+                <button id="btnLoadRooms" class="btn-update" style="margin-top:10px;" onclick="loadRooms()">Räume anzeigen</button>
+                <select id="roomList" style="margin-top:10px; display:none;" onchange="selectRoom()"></select>
             </div>
             <div class="input-group">
                 <label>Zeitraum-Filter:</label>
@@ -198,10 +201,13 @@
 
     <script>
         // Holt die Daten aus der SQL-Datenbank über die API
+        let currentRoom = document.getElementById('roomName').value;
+
         async function fetchHistory() {
             try {
                 const period = document.getElementById('timeFilter').value;
-                const response = await fetch(`/api/webcontrol/history?period=${period}`);
+                currentRoom = document.getElementById('roomName').value;
+                const response = await fetch(`/api/webcontrol/history?room=${encodeURIComponent(currentRoom)}&period=${period}`);
                 const data = await response.json();
 
                 const container = document.getElementById('pathDisplay');
@@ -215,7 +221,6 @@
                     const dot = document.createElement('div');
                     dot.className = 'point pos-node';
 
-                    // Laut Bild 19: posX und posY sind KLEINgeschrieben
                     const xPos = 300 + (item.posX * 2);
                     const yPos = 200 - (item.posY * 2);
 
@@ -225,7 +230,6 @@
                     container.appendChild(dot);
 
                     // 2. Zeile in der Tabelle ergänzen
-                    // Jetzt werden die Felder klein geschrieben, wie vom Backend geliefert
                     const row = `<tr>
                     <td>${item.zeitpunkt}</td>
                     <td>${item.quelle}</td>
@@ -241,28 +245,56 @@
             }
         }
 
-        // Einzelne KI-Abfrage
-        async function doPrediction() {
-            const command = document.getElementById('predictCommand').value;
-            const distance = parseInt(document.getElementById('predictDistance').value);
+        function switchRoom() {
+            currentRoom = document.getElementById('roomName').value;
+            // Karte und Tabelle leeren
+            document.getElementById('pathDisplay').innerHTML = "";
+            document.getElementById('tableBody').innerHTML = "";
+// Nur Umschalten des Raums (kein Dummy-Befehl)
+function switchRoom() {
+    currentRoom = document.getElementById('roomName').value;
+    document.getElementById('pathDisplay').innerHTML = "";
+    document.getElementById('tableBody').innerHTML = "";
+    fetchHistory();
+}
 
+// Neuen Raum anlegen (Dummy-Befehl speichern und dann umschalten)
+function createRoom() {
+    currentRoom = document.getElementById('roomName').value;
+    sendCommand("Raum angelegt", 0, 0, 0);
+    switchRoom();
+}
+            fetchHistory();
+        }
+
+
+        // Beispiel: Befehl an den Roboter senden (Command)
+        async function sendCommand(command, posX, posY, distance) {
+            currentRoom = document.getElementById('roomName').value;
+            const payload = {
+                command: command,
+                posX: posX,
+                posY: posY,
+                distance: distance,
+                roomName: currentRoom
+            };
             try {
-                const response = await fetch('/api/webcontrol/predict', {
+                const response = await fetch('/api/webcontrol/command', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ Command: command, Distance: distance })
+                    body: JSON.stringify(payload)
                 });
                 const result = await response.json();
-                document.getElementById('predictResult').innerText = result.Prediction || 'Fehler';
+                if (result.ok) fetchHistory();
             } catch (e) {
-                document.getElementById('predictResult').innerText = 'Server nicht erreichbar';
+                alert('Fehler beim Senden des Befehls!');
             }
         }
 
         // JPG Export anstoßen
         async function triggerJpgExport() {
             const payload = {
-                RoomName: document.getElementById('roomName').value,
+                RoomName: currentRoom,
                 ExportDate: new Date().toISOString()
             };
 
@@ -280,6 +312,64 @@
 
         // Beim Start einmal laden
         window.onload = fetchHistory;
+
+    </script>
+    <script>
+    function onSendCommand() {
+        const command = document.getElementById('cmdCommand').value;
+        const posX = parseInt(document.getElementById('cmdPosX').value);
+        const posY = parseInt(document.getElementById('cmdPosY').value);
+        const distance = parseInt(document.getElementById('cmdDistance').value);
+        sendCommand(command, posX, posY, distance);
+    }
+
+    // Räume vom Server laden und in die Auswahlliste eintragen
+    async function loadRooms() {
+        const select = document.getElementById('roomList');
+        select.innerHTML = '';
+        try {
+            const response = await fetch('/api/webcontrol/rooms');
+            const rooms = await response.json();
+            if (rooms.length === 0) {
+                select.style.display = 'none';
+                alert('Keine gespeicherten Räume gefunden!');
+                return;
+            }
+            select.style.display = '';
+            rooms.forEach(room => {
+                const opt = document.createElement('option');
+                opt.value = room;
+                opt.text = room;
+                select.appendChild(opt);
+            });
+        } catch (e) {
+            alert('Fehler beim Laden der Räume!');
+        }
+    }
+
+    // Raum aus der Liste auswählen
+    function selectRoom() {
+        const select = document.getElementById('roomList');
+        document.getElementById('roomName').value = select.value;
+        switchRoom();
+    }
+    </script>
+    <div style="margin-top: 30px;">
+        <h3>Test: Befehl an Roboter für aktuellen Raum senden</h3>
+        <input id="cmdCommand" placeholder="Befehl (z.B. Bus)" value="Bus" style="width: 120px;">
+        <input id="cmdPosX" type="number" placeholder="X" value="10" style="width: 60px;">
+        <input id="cmdPosY" type="number" placeholder="Y" value="10" style="width: 60px;">
+        <input id="cmdDistance" type="number" placeholder="Distanz" value="100" style="width: 80px;">
+        <button class="btn-update" onclick="onSendCommand()">Befehl senden</button>
+    </div>
+    <script>
+        function onSendCommand() {
+            const command = document.getElementById('cmdCommand').value;
+            const posX = parseInt(document.getElementById('cmdPosX').value);
+            const posY = parseInt(document.getElementById('cmdPosY').value);
+            const distance = parseInt(document.getElementById('cmdDistance').value);
+            sendCommand(command, posX, posY, distance);
+        }
     </script>
 
 </body>

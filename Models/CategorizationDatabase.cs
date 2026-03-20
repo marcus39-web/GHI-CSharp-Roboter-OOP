@@ -11,13 +11,20 @@ namespace GHI_CSharp_Roboter_OOP.Models
 
         private SqlConnection Connect() => new SqlConnection($"Server={Host};Database={Database};Integrated Security=True;TrustServerCertificate=True;");
 
-        public List<object> GetHistory(int count)
+
+        public List<object> GetHistory(int count, string? roomName = null)
         {
             var list = new List<object>();
             try {
                 using var conn = Connect(); conn.Open();
-                var cmd = new SqlCommand("SELECT TOP (@C) PosX, PosY, DistanceCm, Source, CreatedAt, Category FROM Samples ORDER BY CreatedAt DESC", conn);
+                string sql = "SELECT TOP (@C) PosX, PosY, DistanceCm, Source, CreatedAt, Category, RoomName FROM Samples ";
+                if (!string.IsNullOrEmpty(roomName))
+                    sql += "WHERE RoomName = @RoomName ";
+                sql += "ORDER BY CreatedAt DESC";
+                var cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@C", count);
+                if (!string.IsNullOrEmpty(roomName))
+                    cmd.Parameters.AddWithValue("@RoomName", roomName);
                 using var r = cmd.ExecuteReader();
                 while (r.Read()) {
                     var dt = r["CreatedAt"] != DBNull.Value ? Convert.ToDateTime(r["CreatedAt"]) : DateTime.Now;
@@ -27,25 +34,25 @@ namespace GHI_CSharp_Roboter_OOP.Models
                         posX = r["PosX"],
                         posY = r["PosY"],
                         Distanz = r["DistanceCm"].ToString() + " cm",
-                        Category = r["Category"]?.ToString() ?? "Info"
+                        Category = r["Category"]?.ToString() ?? "Info",
+                        roomName = r["RoomName"]?.ToString() ?? ""
                     });
                 }
             } catch { }
             return list;
         }
 
-        public void SaveRobotAction(string source, string action, int distance, int posX, int posY)
+        public void SaveRobotAction(string source, string action, int distance, int posX, int posY, string? roomName = null)
         {
             try
             {
                 using var conn = Connect();
                 conn.Open();
 
-                // Wir fügen SafeDistanceCm (0) und RawPayload ('{}') hinzu, damit SQL zufrieden ist
                 var sql = @"INSERT INTO Samples 
-                    (Source, DistanceCm, SafeDistanceCm, PosX, PosY, CreatedAt, Category, RawPayload) 
+                    (Source, DistanceCm, SafeDistanceCm, PosX, PosY, CreatedAt, Category, RawPayload, RoomName) 
                     VALUES 
-                    (@S, @D, 0, @X, @Y, GETDATE(), @A, '{}')";
+                    (@S, @D, 0, @X, @Y, GETDATE(), @A, '{}', @RoomName)";
 
                 var cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@S", source);
@@ -53,9 +60,10 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 cmd.Parameters.AddWithValue("@D", distance);
                 cmd.Parameters.AddWithValue("@X", posX);
                 cmd.Parameters.AddWithValue("@Y", posY);
+                cmd.Parameters.AddWithValue("@RoomName", (object?)roomName ?? DBNull.Value);
 
                 cmd.ExecuteNonQuery();
-                Console.WriteLine($"[SQL-SUCCESS] Gespeichert: {action}");
+                Console.WriteLine($"[SQL-SUCCESS] Gespeichert: {action} (Raum: {roomName})");
             }
             catch (Exception ex)
             {

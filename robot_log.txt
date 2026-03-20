@@ -12,3 +12,34 @@
 [2026-03-20 02:33:31] [WARN] Befehl 'BMW (X:850 Y:222 D:160)' gesendet, aber nicht verbunden.
 [2026-03-20 02:35:47] [WARN] Befehl 'BMW (X:850 Y:222 D:160)' gesendet, aber nicht verbunden.
 [2026-03-20 02:38:22] [WARN] Befehl 'Jaguar (X:10 Y:5 D:20)' gesendet, aber nicht verbunden.
+[2026-03-20 03:44:12] [WARN] Befehl 'Bus (X:10 Y:10 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 03:44:50] [WARN] Befehl 'Auto (X:40 Y:10 D:47)' gesendet, aber nicht verbunden.
+[2026-03-20 04:09:20] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:09:39] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:09:54] [WARN] Befehl 'Bus (X:47 Y:10 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 04:11:40] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:12:09] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:12:19] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:12:26] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:13:07] [WARN] Befehl 'Bus (X:177 Y:-26 D:20)' gesendet, aber nicht verbunden.
+[2026-03-20 04:13:43] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:13:47] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:13:57] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:14:05] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:14:19] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:14:46] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:14:54] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:15:15] [WARN] Befehl 'Bus (X:177 Y:-26 D:20)' gesendet, aber nicht verbunden.
+[2026-03-20 04:17:57] [WARN] Befehl 'Bus (X:5 Y:15 D:45)' gesendet, aber nicht verbunden.
+[2026-03-20 04:18:09] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:18:12] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:18:15] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:21:25] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:21:28] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:21:31] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:22:01] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:22:09] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:22:12] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:24:22] [WARN] Befehl 'Ferrari (X:60 Y:60 D:200)' gesendet, aber nicht verbunden.
+[2026-03-20 04:25:02] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
+[2026-03-20 04:25:11] [WARN] Befehl 'Raum angelegt (X:0 Y:0 D:0)' gesendet, aber nicht verbunden.
