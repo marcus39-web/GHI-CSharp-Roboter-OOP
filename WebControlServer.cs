@@ -87,14 +87,30 @@ namespace GHI_CSharp_Roboter_OOP
                     using var reader = new StreamReader(context.Request.Body);
                     var payload = JsonConvert.DeserializeObject<CommandRequest>(await reader.ReadToEndAsync());
                     var (ok, msg) = _gateway.Send(payload?.Command ?? "STOP");
-                    if (ok) _db.SaveRobotAction("WebInterface", payload?.Command ?? "STOP", "Success");
+                    if (ok && payload != null)
+                        _db.SaveRobotAction(
+                            "WebInterface",
+                            payload.Command ?? "STOP",
+                            payload.Distance,
+                            payload.PosX,
+                            payload.PosY
+                        );
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(new { ok, message = msg }));
                 });
             });
         }
 
-        public class CommandRequest { public string Command { get; set; } = string.Empty; }
+        public class CommandRequest {
+            [Newtonsoft.Json.JsonProperty("command")]
+            public string Command { get; set; } = string.Empty;
+            [Newtonsoft.Json.JsonProperty("distance")]
+            public int Distance { get; set; }
+            [Newtonsoft.Json.JsonProperty("posX")]
+            public int PosX { get; set; }
+            [Newtonsoft.Json.JsonProperty("posY")]
+            public int PosY { get; set; }
+        }
 
         public class ExportRequest
         {

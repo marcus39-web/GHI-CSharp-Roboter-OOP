@@ -8,3 +8,7 @@
 [2026-03-20 02:07:30] [WARN] Befehl 'klappt nicht (X:10 Y:20 D:100)' gesendet, aber nicht verbunden.
 [2026-03-20 02:15:04] [WARN] Befehl 'Haltestelle (X:50 Y:90 D:100)' gesendet, aber nicht verbunden.
 [2026-03-20 02:18:29] [WARN] Befehl 'Bus (X:10 Y:10 D:110)' gesendet, aber nicht verbunden.
+[2026-03-20 02:27:54] [WARN] Befehl 'Porsche (X:911 Y:300 D:50)' gesendet, aber nicht verbunden.
+[2026-03-20 02:33:31] [WARN] Befehl 'BMW (X:850 Y:222 D:160)' gesendet, aber nicht verbunden.
+[2026-03-20 02:35:47] [WARN] Befehl 'BMW (X:850 Y:222 D:160)' gesendet, aber nicht verbunden.
+[2026-03-20 02:38:22] [WARN] Befehl 'Jaguar (X:10 Y:5 D:20)' gesendet, aber nicht verbunden.

@@ -45,12 +45,12 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
 
                 return new
                 {
-                    Zeitpunkt = h.Zeitpunkt, // Wichtig für item.Zeitpunkt
-                    Quelle = h.Quelle,       // Wichtig für item.Quelle
-                    Category = cat,          // Wichtig für item.Category
-                    posX = x,                // Wichtig für item.posX (Karte)
-                    posY = y,                // Wichtig für item.posY (Karte)
-                    Distanz = d              // Wichtig für item.Distanz (Tabelle)
+                    zeitpunkt = h.Zeitpunkt, // Kleinbuchstaben für Frontend
+                    quelle = h.Quelle,
+                    category = cat,
+                    posX = x,
+                    posY = y,
+                    distanz = d
                 };
             });
 
@@ -64,12 +64,10 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
             if (_gateway == null) _gateway = new RobotGateway("127.0.0.1", 4000, simulate: true);
             if (request == null) return BadRequest();
 
-            string zeit = DateTime.Now.ToString("HH:mm:ss");
-            // Der Text wird so formatiert, dass wir ihn oben im GET wieder zerlegen können
             string logText = $"{request.Command} (X:{request.PosX} Y:{request.PosY} D:{request.Distance})";
 
             // In DB speichern und an Simulator senden
-            _db.SaveRobotAction("Web-Interface", logText, zeit);
+            _db.SaveRobotAction("Web-Interface", logText, request.Distance, request.PosX, request.PosY);
             _gateway.Send(logText);
 
             return Ok(new { ok = true });

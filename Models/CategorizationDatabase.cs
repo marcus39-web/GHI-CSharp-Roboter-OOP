@@ -34,7 +34,7 @@ namespace GHI_CSharp_Roboter_OOP.Models
             return list;
         }
 
-        public void SaveRobotAction(string source, string action, string status)
+        public void SaveRobotAction(string source, string action, int distance, int posX, int posY)
         {
             try
             {
@@ -45,11 +45,14 @@ namespace GHI_CSharp_Roboter_OOP.Models
                 var sql = @"INSERT INTO Samples 
                     (Source, DistanceCm, SafeDistanceCm, PosX, PosY, CreatedAt, Category, RawPayload) 
                     VALUES 
-                    (@S, 0, 0, 0, 0, GETDATE(), @A, '{}')";
+                    (@S, @D, 0, @X, @Y, GETDATE(), @A, '{}')";
 
                 var cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@S", source);
                 cmd.Parameters.AddWithValue("@A", action);
+                cmd.Parameters.AddWithValue("@D", distance);
+                cmd.Parameters.AddWithValue("@X", posX);
+                cmd.Parameters.AddWithValue("@Y", posY);
 
                 cmd.ExecuteNonQuery();
                 Console.WriteLine($"[SQL-SUCCESS] Gespeichert: {action}");

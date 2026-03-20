@@ -13,21 +13,50 @@ Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ei
 
 ---
 
+
 # Unterrichtsbeispiel für objektorientierte Programmierung in C#
 
 **Dieses Projekt ist speziell für den Einsatz im Unterricht und in der Hochschullehre konzipiert. Es dient als praxisnahes Beispiel für objektorientierte Programmierung in C# und demonstriert zentrale OOP-Konzepte anhand eines modularen Robotersystems.**
 
-## Hauptbestandteil: Das Unterrichts-Beispiel-Verzeichnis
+## Hauptbestandteil: Das UnterrichtsBeispiel-Verzeichnis
 
-Im Verzeichnis `UnterrichtsBeispiel` befindet sich die Datei `DidaktikBeispiel.cs`, die als zentrales didaktisches Beispiel für den Unterricht dient. Die Struktur ist so gewählt, dass sie die wichtigsten Prinzipien der objektorientierten Softwareentwicklung anschaulich und nachvollziehbar vermittelt:
+Im Verzeichnis `UnterrichtsBeispiel` befindet sich die Datei `DidaktikBeispiel.cs`, die als zentrales didaktisches Beispiel für den Unterricht dient. Die Struktur ist so gewählt, dass sie die wichtigsten Prinzipien der objektorientierten Softwareentwicklung anschaulich und nachvollziehbar vermittelt und direkt im Unterricht eingesetzt werden kann.
 
-- **MotorController**: Dieses Modul kapselt die gesamte Logik zur Steuerung der Motoren des Roboters. Es zeigt, wie durch Kapselung und Modularisierung die Komplexität reduziert und die Wiederverwendbarkeit erhöht werden kann. Im Unterricht kann hier gezielt auf die Vorteile von klaren Schnittstellen und die Trennung von Verantwortlichkeiten eingegangen werden.
+### Didaktische Gliederung und Unterrichtsideen
 
-- **SensorModule**: Das Sensormodul abstrahiert verschiedene Sensoren, die der Roboter zur Umgebungswahrnehmung nutzt. Es eignet sich hervorragend, um die Themen Abstraktion, Erweiterbarkeit und lose Kopplung zu behandeln. Lehrende können hier zeigen, wie neue Sensoren einfach integriert werden können, ohne bestehende Logik zu verändern.
+- **1. Aufbau & Inbetriebnahme (Simulation):** Einstieg ohne Hardware, alle Methoden laufen im Simulationsmodus. Ideal für erste Experimente und zum Kennenlernen der Projektstruktur.
 
-- **Robot**: Die zentrale Klasse, die MotorController und SensorModule zusammenführt. Sie demonstriert die Prinzipien der Komposition und Interaktion von Objekten. Im Unterricht kann hier die Zusammenarbeit mehrerer Module und die Umsetzung komplexerer Logik im Gesamtsystem erläutert werden.
+- **2. MotorController:** Kapselt die Motorsteuerung. Im Unterricht kann hier die Bedeutung von Kapselung, Modularisierung und klaren Schnittstellen behandelt werden. Aufgabenidee: Implementiere weitere Fahrbefehle (z.B. Rückwärtsfahren, Drehen).
 
-- **Program**: Der Einstiegspunkt des Beispiels. Hier werden die einzelnen Module instanziiert und das Gesamtsystem gestartet. Dies ist ideal, um den praktischen Einsatz der zuvor erklärten Komponenten zu zeigen und die Verbindung zwischen Theorie und Praxis herzustellen.
+- **3. SensorModule:** Abstraktion verschiedener Sensoren (z.B. Abstandssensor). Lehrende können zeigen, wie lose Kopplung und Erweiterbarkeit durch Interfaces oder Vererbung erreicht werden. Aufgabenidee: Simuliere weitere Sensoren (z.B. Liniensensor, Temperatursensor).
+
+- **4. Robot:** Komposition – die zentrale Klasse, die MotorController und SensorModule zusammenführt. Hier kann die Zusammenarbeit mehrerer Module und die Umsetzung komplexerer Logik (z.B. „Fahre bis Hindernis erkannt“) erläutert werden. Aufgabenidee: Baue eine Methode „Fahre Quadrat“ oder „Folge einer Linie“.
+
+- **5. Erweiterung: KI/Simulation:** Die KI-Logik kann als separates Modul eingebunden werden (z.B. ML.NET, Zufallsentscheidungen, etc.). Aufgabenidee: Integriere eine einfache Entscheidungslogik oder binde ein ML.NET-Modell ein.
+
+- **6. Hauptprogramm:** Einstiegspunkt für die Simulation. Hier werden die Module instanziiert und das Gesamtsystem gestartet. Ideal, um den Zusammenhang zwischen Theorie und Praxis zu zeigen.
+
+### Konkrete Unterrichtsaufgaben und -ziele
+
+- **Refactoring:** Baue die Klassen so um, dass echte Hardware angebunden werden kann (Dependency Injection, Interfaces).
+- **Testen:** Schreibe Unit-Tests für MotorController und SensorModule.
+- **Erweiterung:** Ergänze neue Fahrmodi oder Sensoren und diskutiere die Auswirkungen auf die Architektur.
+- **Fehlerbehandlung:** Implementiere Fehlerfälle (z.B. Sensor defekt) und diskutiere Exception Handling.
+- **Dokumentation:** Kommentiere die Klassen und Methoden nach C#-Standard.
+
+### Integration von Swagger UI im Unterricht
+
+- **API-Exploration:** Mit Swagger UI ([http://localhost:4000/swagger](http://localhost:4000/swagger)) können die REST-Endpunkte des Projekts live ausprobiert werden. Das ist ideal, um die Kommunikation zwischen Frontend, Backend und Simulation zu demonstrieren.
+- **Aufgabenidee:** Sende eigene Kommandos an den Roboter über Swagger UI und beobachte die Auswirkungen in der Simulation und im Dashboard.
+- **API-Dokumentation:** Zeige, wie OpenAPI/Swagger die Schnittstellen dokumentiert und wie daraus automatisch Client-Code generiert werden kann.
+
+### Beispielhafter Ablauf für eine Unterrichtseinheit
+
+1. **Vorstellung der Projektstruktur und OOP-Konzepte anhand von DidaktikBeispiel.cs**
+2. **Live-Demo:** Simulation starten, Fahrbefehl über Swagger UI senden, Ergebnis im Dashboard beobachten
+3. **Code-Analyse:** Klassenstruktur, Modularisierung, Erweiterbarkeit
+4. **Selbstständige Aufgaben:** Neue Fahrbefehle/Sensoren implementieren, Tests schreiben, API erweitern
+5. **Reflexion:** Vorteile von OOP, Testbarkeit, Dokumentation, API-Design
 
 Jede dieser Komponenten ist so gestaltet, dass sie im Unterricht einzeln behandelt, erweitert und getestet werden kann. Das fördert das Verständnis für saubere Softwarearchitektur und die Prinzipien der objektorientierten Programmierung.
 
@@ -99,7 +128,31 @@ cd GHI-CSharp-Roboter-OOP
 
 ---
 
-## 🖥️ Benutzung
+
+## 📑 Swagger UI & API-Dokumentation
+
+Das Projekt bietet eine automatisch generierte API-Dokumentation mit **Swagger UI** (OpenAPI). Damit können alle Endpunkte direkt im Browser getestet und dokumentiert werden.
+
+### Swagger UI öffnen
+
+- Nach dem Start des Projekts im Browser aufrufen:
+  - [http://localhost:4000/swagger](http://localhost:4000/swagger)
+
+- Hier können alle API-Endpunkte interaktiv ausprobiert, getestet und die Request/Response-Formate eingesehen werden.
+
+### Wichtige Funktionen über Swagger UI
+
+- **/api/webcontrol/command** – Sende Bewegungsbefehle (POST, JSON-Body: `command`, `posX`, `posY`, `distance`)
+- **/api/webcontrol/history** – Hole die letzten Bewegungsdaten (GET)
+- **/api/webcontrol/predict** – KI-Vorhersage für ein Kommando (POST)
+- **/api/export** – Exportiere eine technische Zeichnung als JPG (POST)
+- **/api/webcontrol/emergency-stop** – Not-Aus (POST)
+
+Swagger/OpenAPI ist ideal für:
+- Entwicklung und Testen der API
+- Automatische Dokumentation
+- Generierung von Client-Code (z.B. für TypeScript, C#, Python)
+
 
 1. **Projekt starten:**
    - Drücke `F5` in Visual Studio oder führe `dotnet run` im Projektverzeichnis aus.

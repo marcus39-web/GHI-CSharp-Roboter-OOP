@@ -225,13 +225,13 @@
                     container.appendChild(dot);
 
                     // 2. Zeile in der Tabelle ergänzen
-                    // Laut Bild 19 heißen die Felder: Zeitpunkt, Quelle, Distanz, Category
+                    // Jetzt werden die Felder klein geschrieben, wie vom Backend geliefert
                     const row = `<tr>
-                    <td>${item.Zeitpunkt}</td>
-                    <td>${item.Quelle}</td>
+                    <td>${item.zeitpunkt}</td>
+                    <td>${item.quelle}</td>
                     <td>${item.posX} | ${item.posY}</td>
-                    <td>${item.Distanz}</td>
-                    <td><strong>${item.Category || item.category || 'Normal'}</strong></td>
+                    <td>${item.distanz}</td>
+                    <td><strong>${item.category || 'Normal'}</strong></td>
                     </tr>`;
                     table.innerHTML += row;
                 });
