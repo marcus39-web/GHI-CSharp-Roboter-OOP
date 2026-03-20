@@ -36,16 +36,33 @@ namespace GHI_CSharp_Roboter_OOP.Models
 
         public void SaveRobotAction(string source, string action, string status)
         {
-            try {
-                using var conn = Connect(); conn.Open();
-                var cmd = new SqlCommand("INSERT INTO Samples (Source, DistanceCm, PosX, PosY, CreatedAt, Category) VALUES (@S, 0, 0, 0, GETDATE(), @A)", conn);
+            try
+            {
+                using var conn = Connect();
+                conn.Open();
+
+                // Wir fügen SafeDistanceCm (0) und RawPayload ('{}') hinzu, damit SQL zufrieden ist
+                var sql = @"INSERT INTO Samples 
+                    (Source, DistanceCm, SafeDistanceCm, PosX, PosY, CreatedAt, Category, RawPayload) 
+                    VALUES 
+                    (@S, 0, 0, 0, 0, GETDATE(), @A, '{}')";
+
+                var cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@S", source);
                 cmd.Parameters.AddWithValue("@A", action);
+
                 cmd.ExecuteNonQuery();
-            } catch { }
+                Console.WriteLine($"[SQL-SUCCESS] Gespeichert: {action}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("!!! SQL-FEHLER: " + ex.Message);
+                // Wir werfen keinen Fehler mehr, damit die API nicht abstürzt, 
+                // aber wir sehen den Grund in der Konsole.
+            }
         }
 
-      
+
         public void GenerateTechnicalDrawing(string path, object data) { }
     }
 }

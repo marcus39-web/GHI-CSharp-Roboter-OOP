@@ -17,7 +17,7 @@ Dieses Projekt ermöglicht die Fernsteuerung und Analyse eines Roboters über ei
 
 **Dieses Projekt ist speziell für den Einsatz im Unterricht und in der Hochschullehre konzipiert. Es dient als praxisnahes Beispiel für objektorientierte Programmierung in C# und demonstriert zentrale OOP-Konzepte anhand eines modularen Robotersystems.**
 
-## Hauptbestandteil: Das UnterrichtsBeispiel-Verzeichnis
+## Hauptbestandteil: Das Unterrichts-Beispiel-Verzeichnis
 
 Im Verzeichnis `UnterrichtsBeispiel` befindet sich die Datei `DidaktikBeispiel.cs`, die als zentrales didaktisches Beispiel für den Unterricht dient. Die Struktur ist so gewählt, dass sie die wichtigsten Prinzipien der objektorientierten Softwareentwicklung anschaulich und nachvollziehbar vermittelt:
 

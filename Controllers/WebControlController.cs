@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using GHI_CSharp_Roboter_OOP.Models;
+using System.Text.Json.Serialization;
+using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace GHI_CSharp_Roboter_OOP.Controllers
 {
@@ -8,75 +12,76 @@ namespace GHI_CSharp_Roboter_OOP.Controllers
     public class WebControlController : ControllerBase
     {
         private static RobotGateway? _gateway;
-        private static readonly object _initLock = new object();
-        private static readonly PredictionService _predictionService = new PredictionService();
+        private readonly CategorizationDatabase _db;
 
-        private void EnsureGateway()
+        public WebControlController(CategorizationDatabase db)
         {
-            if (_gateway == null)
-            {
-                lock (_initLock)
+            _db = db;
+        }
+
+        [HttpGet("history")]
+        public IActionResult GetHistory()
+        {
+            // Holt die Daten und nutzt 'dynamic', damit Visual Studio keine Fehler meldet
+            var rawData = _db.GetHistory(100).Cast<dynamic>().ToList();
+
+            // Mapping: Wir bauen das Objekt exakt so, wie deine index.html es mit "item.X" abruft
+            var tableData = rawData.Select(h => {
+                string cat = h.Category ?? "";
+                int x = 0, y = 0, d = 0;
+
+                // Extrahiert die Zahlen aus dem Text "(X:40 Y:122 D:80)" für die Tabellenspalten
+                try
                 {
-                    if (_gateway == null)
+                    if (cat.Contains("X:"))
                     {
-                        
-                        _gateway = new RobotGateway("127.0.0.1", 4000, simulate: true);
+                        var parts = cat.Split(new[] { ':', ' ', ')', '(' }, StringSplitOptions.RemoveEmptyEntries);
+                        x = int.Parse(parts[Array.IndexOf(parts, "X") + 1]);
+                        y = int.Parse(parts[Array.IndexOf(parts, "Y") + 1]);
+                        d = int.Parse(parts[Array.IndexOf(parts, "D") + 1]);
                     }
                 }
-            }
-        }
+                catch { /* Falls Extraktion scheitert, bleiben Werte auf 0 */ }
 
-        // Geändert auf HttpGet, damit du es im Browser unter /api/webcontrol/status prüfen kannst
-        [HttpGet("status")]
-        public IActionResult GetStatus()
-        {
-            EnsureGateway();
-            return Ok(new
-            {
-                ok = true,
-                message = "BrainBot Online",
-                connected = _gateway!.Connected,
-                mode = "Simulation"
+                return new
+                {
+                    Zeitpunkt = h.Zeitpunkt, // Wichtig für item.Zeitpunkt
+                    Quelle = h.Quelle,       // Wichtig für item.Quelle
+                    Category = cat,          // Wichtig für item.Category
+                    posX = x,                // Wichtig für item.posX (Karte)
+                    posY = y,                // Wichtig für item.posY (Karte)
+                    Distanz = d              // Wichtig für item.Distanz (Tabelle)
+                };
             });
-        }
 
-        [HttpPost("connect")]
-        public IActionResult Connect()
-        {
-            EnsureGateway();
-            var (ok, message) = _gateway!.Connect();
-            return Ok(new { ok, message, connected = _gateway.Connected });
+            return Ok(tableData);
         }
 
         [HttpPost("command")]
         public IActionResult Command([FromBody] CommandRequest request)
         {
-            EnsureGateway();
-            if (string.IsNullOrWhiteSpace(request.Command))
-                return BadRequest(new { ok = false, message = "Kommando fehlt" });
+            // Gateway initialisieren falls nötig
+            if (_gateway == null) _gateway = new RobotGateway("127.0.0.1", 4000, simulate: true);
+            if (request == null) return BadRequest();
 
-            var (ok, message) = _gateway!.Send(request.Command);
+            string zeit = DateTime.Now.ToString("HH:mm:ss");
+            // Der Text wird so formatiert, dass wir ihn oben im GET wieder zerlegen können
+            string logText = $"{request.Command} (X:{request.PosX} Y:{request.PosY} D:{request.Distance})";
 
-       
-            return Ok(new { ok, message, connected = _gateway.Connected });
+            // In DB speichern und an Simulator senden
+            _db.SaveRobotAction("Web-Interface", logText, zeit);
+            _gateway.Send(logText);
+
+            return Ok(new { ok = true });
         }
 
-        [HttpPost("predict")]
-        public IActionResult Predict([FromBody] PredictRequest req)
+        // Die Klasse für die Swagger-Eingabe
+        public class CommandRequest
         {
-            if (req == null || string.IsNullOrEmpty(req.Command))
-                return BadRequest(new { ok = false, message = "Daten unvollständig" });
-
-            string prediction = _predictionService.Predict(req.Command, req.Distance ?? 0);
-            return Ok(new { ok = true, prediction });
-        }
-
-
-        public class CommandRequest { public string? Command { get; set; } }
-        public class PredictRequest
-        {
-            public string? Command { get; set; }
-            public int? Distance { get; set; }
+            [JsonPropertyName("command")] public string? Command { get; set; }
+            [JsonPropertyName("posX")] public int PosX { get; set; }
+            [JsonPropertyName("posY")] public int PosY { get; set; }
+            [JsonPropertyName("distance")] public int Distance { get; set; }
         }
     }
 }

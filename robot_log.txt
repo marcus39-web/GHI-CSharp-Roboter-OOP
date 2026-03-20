@@ -1,0 +1,10 @@
+[2026-03-20 01:34:24] [WARN] Befehl 'also ein test | X:50 Y:100 Dist:20' gesendet, aber nicht verbunden.
+[2026-03-20 01:40:22] [WARN] Befehl 'Hallo (X:20 Y:80 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 01:46:18] [WARN] Befehl 'Legefeld (X:40 Y:122 D:80)' gesendet, aber nicht verbunden.
+[2026-03-20 01:50:26] [WARN] Befehl 'Testfahrt (X:47 Y:11 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 01:53:54] [WARN] Befehl 'Testfahrten (X:50 Y:90 D:200)' gesendet, aber nicht verbunden.
+[2026-03-20 01:58:44] [WARN] Befehl 'Autobahn (X:40 Y:200 D:60)' gesendet, aber nicht verbunden.
+[2026-03-20 02:04:33] [WARN] Befehl 'Fahrrad (X:47 Y:11 D:50)' gesendet, aber nicht verbunden.
+[2026-03-20 02:07:30] [WARN] Befehl 'klappt nicht (X:10 Y:20 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 02:15:04] [WARN] Befehl 'Haltestelle (X:50 Y:90 D:100)' gesendet, aber nicht verbunden.
+[2026-03-20 02:18:29] [WARN] Befehl 'Bus (X:10 Y:10 D:110)' gesendet, aber nicht verbunden.

@@ -1,54 +1,47 @@
-﻿using GHI_CSharp_Roboter_OOP.Models;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.IO;
+using GHI_CSharp_Roboter_OOP.Models; // Wichtig für die Database
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. CORS - Erlaubt dem Browser den Zugriff
-builder.Services.AddCors(o => o.AddPolicy("All", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+// --- SERVICES REGISTRIEREN ---
+// WICHTIG: Erlaubt dem Programm, deine Controller-Dateien (WebControlController.cs) zu finden
+builder.Services.AddControllers();
 
-// 2. Datenbank registrieren
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options => options.AddPolicy("All", p =>
+    p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+// Deine Datenbank als Singleton
 builder.Services.AddSingleton<CategorizationDatabase>();
 
-// WICHTIG: Verhindert, dass C# die Namen (PosX, DistanceCm) in Kleinbuchstaben umwandelt!
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o => o.SerializerOptions.PropertyNamingPolicy = null);
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+    options.SerializerOptions.PropertyNamingPolicy = null);
 
 var app = builder.Build();
+
+// --- MIDDLEWARE CONFIG ---
+app.UseSwagger();
+app.UseSwaggerUI(options => {
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BrainBot API v1");
+    options.RoutePrefix = "swagger";
+});
+
 app.UseCors("All");
 
-// 3. Statische Dateien (index.html laden)
-var def = new DefaultFilesOptions();
-def.DefaultFileNames.Clear();
-def.DefaultFileNames.Add("web_control/index.html");
-app.UseDefaultFiles(def);
+// Statische Dateien (Frontend)
+app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = { "web_control/index.html" } });
 app.UseStaticFiles();
 
-// --- API ENDPUNKTE ---
+// --- ROUTING ---
+// WICHTIG: Leitet Anfragen wie /api/webcontrol/command an deinen Controller weiter
+app.MapControllers();
 
-// Historie für die Tabelle abrufen
-app.MapGet("/api/webcontrol/history", (CategorizationDatabase db) => {
-    var data = db.GetHistory(100);
-    return Results.Json(data, contentType: "application/json");
-});
-
-// Befehle senden
-app.MapPost("/api/webcontrol/command", (CategorizationDatabase db, ControlCommand cmd) => {
-    db.SaveRobotAction("Web-UI", $"{cmd.Direction} {cmd.Value}", "Aktiv");
-    return Results.Ok(new { status = "OK" });
-});
-
-// NEU: Endpunkt für den JPG-Export (v1.0.2)
-// Damit der grüne Button im Frontend endlich eine Antwort bekommt!
-app.MapPost("/api/webcontrol/export", () => {
-    Console.WriteLine("📸 JPG Export v1.0.2: Befehl vom Frontend empfangen!");
-    // Hier simulieren wir den Erfolg für das Frontend
-    return Results.Ok(new
-    {
-        success = true,
-        message = "Export erfolgreich im Server-Log registriert!"
-    });
-});
+// Hinweis: Die alten app.MapGet und app.MapPost Blöcke wurden entfernt, 
+// damit dein WebControlController nicht blockiert wird.
 
 app.Run();
-
-public record ControlCommand(string Direction, string Value);
